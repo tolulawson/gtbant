@@ -1,5 +1,6 @@
-import { Box, Text, Image } from '@chakra-ui/react';
-import Carousel, { Dots, autoplayPlugin } from '@brainhubeu/react-carousel';
+import { Box, Text, Image, background, AbsoluteCenter } from '@chakra-ui/react';
+import dynamic from 'next/dynamic';
+import { autoplayPlugin } from '@brainhubeu/react-carousel';
 import '@brainhubeu/react-carousel/lib/style.css';
 
 export default function Slides() {
@@ -31,20 +32,23 @@ export default function Slides() {
     },
   ];
 
+  const Carousel = dynamic(() => import('@brainhubeu/react-carousel'));
+
   return (
-    <Carousel
-      plugins={[
-        'infinite',
-        {
-          resolve: autoplayPlugin,
-          options: {
-            interval: 2000,
+    <>
+      <Carousel
+        plugins={[
+          'infinite',
+          {
+            resolve: autoplayPlugin,
+            options: {
+              interval: 2500,
+            },
           },
-        },
-      ]}
-      animationSpeed={1000}
-    >
-      {
+        ]}
+        animationSpeed={1000}
+      >
+        {
         sliderData.map((slideData) => (
           <Box
             key={slideData.image}
@@ -55,10 +59,18 @@ export default function Slides() {
               objectFit='cover'
               h={550}
             />
-            {/* <Text>{slideData?.text}</Text> */}
+            <Box sx={{
+              background: 'linear-gradient(180deg, rgba(222, 74, 9, 0) 24.34%, #642002 100%);',
+              width: '100%',
+              height: '100%',
+              position: 'absolute',
+              bottom: 0,
+            }} />
+            <Text position='absolute' bottom={7} align='center' fontSize='3xl' pl='10%' pr='10%' fontWeight='medium' lineHeight={1.2}>{slideData?.text}</Text>
           </Box>
         ))
       }
-    </Carousel>
+      </Carousel>
+    </>
   );
 }

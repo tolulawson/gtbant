@@ -62,6 +62,8 @@ export default function Slides() {
               objectFit='cover'
               h={[200,, 550]}
               w='100%'
+              borderTopLeftRadius={['1.75rem',, 0]}
+              borderTopRightRadius={['1.75rem',, 0]}
             />
             <Box
               sx={{
@@ -70,9 +72,10 @@ export default function Slides() {
                 height: '100%',
                 position: 'absolute',
                 bottom: 0,
+                left: 0,
               }}
             />
-            <Text as='span' position='absolute' bottom={[3,, 7]} align='center' fontSize={['xl', '2xl', '3xl']} pl='10%' pr='10%' fontWeight='medium' lineHeight={1.2}>{slideData?.text}</Text>
+            <Text as='span' position='absolute' bottom={[3,, 7]} align='center' fontSize={['xl', '2xl', '3xl']} px={['5%',, '10%']} fontWeight='medium' lineHeight={1.2} left='50%' transform='translateX(-50%)' w='100%'>{slideData?.text}</Text>
           </Box>
         ))
       }

@@ -9,6 +9,7 @@ const styles = {
     },
     body: {
       bg: defaultTheme.colors.transparent,
+      color: defaultTheme.colors.white,
     },
   },
 };
@@ -34,15 +35,20 @@ const colors = {
     700: '#7c2803',
     800: '#4c1700',
     900: '#200400',
-  }
+  },
 };
 
 const components = {
   Heading: {
     baseStyle: {
       fontWeight: 'normal',
-    }
-  }
+    },
+  },
+};
+
+const config = {
+  initialColorMode: 'light',
+  useSystemColorMode: false,
 };
 
 const overrides = {
@@ -52,6 +58,7 @@ const overrides = {
   fonts,
   colors,
   components,
+  config,
 };
 
 const customTheme = extendTheme(overrides);

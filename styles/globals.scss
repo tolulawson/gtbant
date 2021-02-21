@@ -3,13 +3,11 @@
   border-top-right-radius: 1.75rem;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-}
-@media (min-width: 48em) {
-  .BrainhubCarousel__container {
+
+  @media (min-width: 48em) {
     border-top-left-radius: 1.75rem;
     border-top-right-radius: 0;
     border-bottom-left-radius: 1.75rem;
     border-bottom-right-radius: 0;
   }
 }
-/*# sourceMappingURL=globals.css.map */

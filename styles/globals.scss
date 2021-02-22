@@ -7,17 +7,11 @@ html {
   height: -webkit-fill-available;
 }
 
-.BrainhubCarousel__container {
-  border-top-left-radius: 1.75rem;
-  border-top-right-radius: 1.75rem;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
+.control-dots {
+  margin: 4px 0!important;
+}
 
-  @media (min-width: 48em) {
-    border-top-left-radius: 1.75rem;
-    border-top-right-radius: 0;
-    border-bottom-left-radius: 1.75rem;
-    border-bottom-right-radius: 0;
-  }
+.slide {
+  background: transparent!important;
 }
 

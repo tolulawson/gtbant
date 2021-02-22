@@ -1,10 +1,10 @@
 /* eslint-disable no-sparse-arrays */
 import {
-  Box, Text, Image, background, AbsoluteCenter,
+  Box, Text, Image,
 } from '@chakra-ui/react';
-import dynamic from 'next/dynamic';
 import { autoplayPlugin } from '@brainhubeu/react-carousel';
-import '@brainhubeu/react-carousel/lib/style.css';
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 export default function Slides() {
   const sliderData = [
@@ -35,21 +35,20 @@ export default function Slides() {
     },
   ];
 
-  const Carousel = dynamic(() => import('@brainhubeu/react-carousel'));
-
   return (
     <>
       <Carousel
-        plugins={[
-          'infinite',
-          {
-            resolve: autoplayPlugin,
-            options: {
-              interval: 2500,
-            },
-          },
-        ]}
-        animationSpeed={1000}
+        showArrows={false}
+        showStatus={false}
+        infiniteLoop
+        showThumbs={false}
+        useKeyboardArrows
+        autoPlay
+        stopOnHover
+        swipeable
+        emulateTouch
+        interval={2300}
+        transitionTime={450}
       >
         {
         sliderData.map((slideData) => (
@@ -75,7 +74,7 @@ export default function Slides() {
                 left: 0,
               }}
             />
-            <Text as='span' position='absolute' bottom={[3,, 7]} align='center' fontSize={['xl', '2xl', '3xl']} px={['5%',, '10%']} fontWeight='medium' lineHeight={1.2} left='50%' transform='translateX(-50%)' w='100%'>{slideData?.text}</Text>
+            <Text as='span' position='absolute' bottom={[7,, 8]} align='center' fontSize={['xl', '2xl', '3xl']} px={['5%',, '10%']} fontWeight='medium' lineHeight={1.2} left='50%' transform='translateX(-50%)' w='100%'>{slideData?.text}</Text>
           </Box>
         ))
       }

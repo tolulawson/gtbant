@@ -4,25 +4,21 @@ import {
   ModalOverlay,
   ModalContent,
   ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
   Button,
   useTheme,
   FormControl,
   FormLabel,
-  FormErrorMessage,
-  FormHelperText,
   Input,
-  Checkbox,
-  Stack,
   Textarea,
-  InputGroup,
   InputRightElement,
+  Stack,
+  Text,
 } from '@chakra-ui/react';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import StarRatings from 'react-star-ratings';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import RadioAvatar from './radioAvatar';
 
 export default function ReviewForm({ isOpen, onClose, ...rest }) {
@@ -33,11 +29,16 @@ export default function ReviewForm({ isOpen, onClose, ...rest }) {
     setAvatarIndex(value);
   };
   const [anonymous, setAnonymous] = useState(false);
+  const [formStatus, setFormStatus] = useState({
+    loading: false,
+    error: false,
+    data: false,
+  });
 
   const theme = useTheme();
 
   const {
-    register, handleSubmit, errors, reset, setValue, clearErrors,
+    register, handleSubmit, errors, reset, setValue, clearErrors, formState,
   } = useForm({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
@@ -48,10 +49,41 @@ export default function ReviewForm({ isOpen, onClose, ...rest }) {
     shouldFocusError: true,
     shouldUnregister: true,
   });
-  const onSubmit = (data) => {
-    const concatData = { ...data, rating, avatarIndex };
-    console.log(concatData);
+  const { isDirty } = formState;
+
+  const resetForm = () => {
+    reset();
+    setRating(0);
+    setAnonymous(false);
+    clearErrors();
+    setFormStatus({
+      data: false,
+      loading: false,
+      error: false,
+    });
   };
+
+  const onSubmit = async (formInput) => {
+    const concatData = { ...formInput, rating, avatarIndex };
+    setFormStatus({ data: false, loading: true, error: false });
+    try {
+      const response = await fetch('/api/postReview', {
+        method: 'POST',
+        body: JSON.stringify(concatData),
+      });
+      if (!response.ok) {
+        setFormStatus({ data: false, loading: false, error: true });
+        throw new Error(`HTTP error! status: ${response.status}`);
+      } else {
+        setFormStatus({ data: true, loading: false, error: false });
+        resetForm();
+      }
+    } catch (e) {
+      setFormStatus({ data: false, loading: false, error: true });
+    }
+  };
+
+  const { loading, error, data } = formStatus;
 
   const toggleAnonymous = () => {
     setAnonymous((anon) => !anon);
@@ -59,7 +91,7 @@ export default function ReviewForm({ isOpen, onClose, ...rest }) {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={() => { onClose(); reset(); setRating(0); setAnonymous(false); clearErrors(); }} isCentered motionPreset='slideInBottom' size='2xl' {...rest}>
+    <Modal isOpen={isOpen} onClose={() => { onClose(); resetForm(); }} isCentered motionPreset='slideInBottom' size='2xl' {...rest}>
       <ModalOverlay />
       <ModalContent px={[0, 3, 10]} pt={[3, 1]} pb={[6]} borderRadius='2xl'>
         <ModalHeader color='gray.600' fontWeight='medium' fontSize='2xl'>Useful Review, Useless Bank</ModalHeader>
@@ -99,7 +131,10 @@ export default function ReviewForm({ isOpen, onClose, ...rest }) {
                 <FormLabel>Review *</FormLabel>
                 <Textarea type='text' placeholder='Write a review' name='review' ref={register({ required: true })} isInvalid={errors.review} />
               </FormControl>
-              <Button colorScheme='gt' borderRadius='4xl' pl={[4, 8]} pr={[4, 8]} maxW='200px' type='submit' mb={[8,, 0]}>Submit</Button>
+              <Stack direction='row' align='center'>
+                <Button colorScheme='gt' borderRadius='4xl' pl={[4, 8]} pr={[4, 8]} maxW='200px' type='submit' mb={[8,, 0]} isLoading={loading} loadingText='Posting'>Submit</Button>
+                <Text hidden={(data || error)} fontSize='sm' color={`${error ? 'red' : 'inherit'}`}>{`${!error ? 'Your review was posted' : 'An error occured. Try again'}`}</Text>
+              </Stack>
             </Stack>
           </form>
         </ModalBody>

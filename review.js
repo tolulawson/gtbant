@@ -33,7 +33,7 @@ export default function Review({
           objectFit='contain'
         />
         <Stack spacing={0} direction='column'>
-          <Text fontSize={['sm',, 'lg']} color='gray.600' align={['center',, 'left']} lineHeight={[1.1,, 1.5]}>{displayName}</Text>
+          <Text fontSize={['sm',, 'lg']} color='gray.600' align={['center',, 'left']} lineHeight={[1.1,, 1.5]} isTruncated maxW='100px'>{displayName}</Text>
           <Stack spacing={0} direction='column' display={['none',, 'inherit']}>
             <StarRatings
               rating={reviewRating}

@@ -1,13 +1,19 @@
 const admin = require('firebase-admin');
 
-const serviceAccount = require('../../gtbant-46196-firebase-adminsdk-t1yk7-e942123ab8.json');
-
 export default async (req, res) => {
   const data = JSON.parse(req.body);
 
   if (!admin.apps.length) {
+    // admin.initializeApp({
+    //   credential: admin.credential.cert(serviceAccount),
+    // });
     admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount),
+      credential: admin.credential.cert({
+        client_email: process.env.FIREBASE_CLIENT_EMAIL,
+        private_key: process.env.FIREBASE_PRIVATE_KEY,
+        project_id: process.env.project_id,
+      }),
+      databaseURL: process.env.databaseURL,
     });
   }
 

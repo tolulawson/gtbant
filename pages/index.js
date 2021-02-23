@@ -107,7 +107,7 @@ export default function Home({ data }) {
             <Divider />
             <Stack direction='column' height='100vh' overflowY='scroll' w='100%' align='center'>
               {
-                !reviews.length ? <Text color='gray.500' mt='150px' fontSize='lg'>No reviews have been posted</Text>
+                !reviews?.length ? <Text color='gray.500' mt='150px' fontSize='lg'>No reviews have been posted</Text>
                   : reviews.map((singleReview) => {
                     const {
                       name,

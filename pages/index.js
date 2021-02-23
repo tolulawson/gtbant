@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable global-require */
 /* eslint-disable max-len */
 /* eslint-disable no-sparse-arrays */
@@ -104,7 +105,7 @@ export default function Home({ data }) {
 
                   return (
                     <Review
-                      displayName={!name ? 'Anonymous' : name}
+                      displayName={!name ? 'Anonymous' : name.split(' ').length > 1 ? `${name.split(' ')[0]} ${name.split(' ')[1][0]}.` : name}
                       avatarURLIndex={avatarIndex}
                       reviewRating={rating}
                       timestamp={timestamp}

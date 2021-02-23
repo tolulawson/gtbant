@@ -56,11 +56,6 @@ export default function ReviewForm({ isOpen, onClose, refresh }) {
     setRating(0);
     setAnonymous(false);
     clearErrors();
-    setFormStatus({
-      data: false,
-      loading: false,
-      error: false,
-    });
   };
 
   const onSubmit = async (formInput) => {
@@ -94,7 +89,20 @@ export default function ReviewForm({ isOpen, onClose, refresh }) {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={() => { onClose(); resetForm(); }} isCentered motionPreset='slideInBottom' size='2xl'>
+    <Modal
+      isOpen={isOpen}
+      onClose={() => {
+        onClose(); resetForm();
+        setFormStatus({
+          data: false,
+          loading: false,
+          error: false,
+        });
+      }}
+      isCentered
+      motionPreset='slideInBottom'
+      size='2xl'
+    >
       <ModalOverlay />
       <ModalContent px={[0, 3, 10]} pt={[3, 1]} pb={[6]} borderRadius='2xl'>
         <ModalHeader color='gray.600' fontWeight='medium' fontSize='2xl'>Useful Review, Useless Bank</ModalHeader>
@@ -136,7 +144,7 @@ export default function ReviewForm({ isOpen, onClose, refresh }) {
               </FormControl>
               <Stack direction='row' align='center'>
                 <Button colorScheme='gt' borderRadius='4xl' pl={[4, 8]} pr={[4, 8]} maxW='200px' type='submit' mb={[8,, 0]} isLoading={loading} loadingText='Posting'>Submit</Button>
-                <Text hidden={(data || error)} fontSize='sm' color={`${error ? 'red' : 'inherit'}`}>{`${!error ? 'Your review was posted' : 'An error occured. Try again'}`}</Text>
+                <Text hidden={(loading || !(data || error))} fontSize='sm' color={`${error ? 'red' : 'inherit'}`}>{`${!error ? 'Your review was posted' : 'An error occured. Try again'}`}</Text>
               </Stack>
             </Stack>
           </form>

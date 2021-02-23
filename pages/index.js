@@ -3,7 +3,7 @@
 /* eslint-disable max-len */
 /* eslint-disable no-sparse-arrays */
 import {
-  useTheme, Box, Heading, Text, Button, Stack, Divider, useDisclosure,
+  useTheme, Box, Heading, Text, Button, Stack, Divider, useDisclosure, Link,
 } from '@chakra-ui/react';
 import Image from 'next/image';
 import StarRatings from 'react-star-ratings';
@@ -107,37 +107,46 @@ export default function Home({ data }) {
             <Divider />
             <Stack direction='column' height='100vh' overflowY='scroll' w='100%' align='center'>
               {
-                reviews.map((singleReview) => {
-                  const {
-                    name,
-                    avatarIndex,
-                    rating,
-                    timestamp,
-                    subject,
-                    review,
-                  } = singleReview;
+                !reviews.length ? <Text color='gray.500' mt='150px' fontSize='lg'>No reviews have been posted</Text>
+                  : reviews.map((singleReview) => {
+                    const {
+                      name,
+                      avatarIndex,
+                      rating,
+                      timestamp,
+                      subject,
+                      review,
+                    } = singleReview;
 
-                  return (
-                    <Review
-                      displayName={!name ? 'Anonymous' : name.split(' ').length > 1 ? `${name.split(' ')[0]} ${name.split(' ')[1][0]}.` : name}
-                      avatarURLIndex={avatarIndex}
-                      reviewRating={rating}
-                      timestamp={timestamp}
-                      reviewSubject={subject}
-                      reviewBody={review}
-                      key={timestamp}
-                    />
-                  );
-                })
+                    return (
+                      <Review
+                        displayName={!name ? 'Anonymous' : name.split(' ').length > 1 ? `${name.split(' ')[0]} ${name.split(' ')[1][0]}.` : name}
+                        avatarURLIndex={avatarIndex}
+                        reviewRating={rating}
+                        timestamp={timestamp}
+                        reviewSubject={subject}
+                        reviewBody={review}
+                        key={timestamp}
+                      />
+                    );
+                  })
               }
               <Box mb={10}>
-                <Button variant='ghost' colorScheme='gt' size='lg'>Load more reviews</Button>
+                {/* <Button variant='ghost' colorScheme='gt' size='lg'>Load more reviews</Button> */}
               </Box>
             </Stack>
           </Stack>
         </Stack>
       </Box>
       <ReviewForm isOpen={isOpen} onClose={onClose} refresh={refreshData} />
+      <Stack mt={10} align='center' maxW='2xl' lineHeight={1.1} mx='auto'>
+        <Text fontSize='xs' align='center'>This is not a real website. All names, copy, and colors are products of the developer’s hilarious imagination. Any resemblance to actual persons or companies, good service or otherwise, is purely coincidental.</Text>
+        <Text>
+          Built for lolz by
+          {' '}
+          <Link href='https://tolulawson.dev' fontWeight='bold' target='_blank'>tolulawson.dev</Link>
+        </Text>
+      </Stack>
     </>
   );
 }

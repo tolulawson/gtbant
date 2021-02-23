@@ -11,6 +11,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
+import 'firebase/analytics';
 import Slides from '../slider';
 import Review from '../review';
 import ReviewForm from '../reviewForm';
@@ -26,6 +27,19 @@ export default function Home({ data }) {
   const { totalReviews, averageRating, reviews } = data;
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const firebaseConfig = {
+    apiKey: process.env.FIREBASE_APIKEY,
+    authDomain: 'gtbant-46196.firebaseapp.com',
+    projectId: 'gtbant-46196',
+    storageBucket: 'gtbant-46196.appspot.com',
+    messagingSenderId: '762936752644',
+    appId: '1:762936752644:web:b20172f0899643fd2c5351',
+    measurementId: 'G-BBB9689FZM',
+  };
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  }
 
   return (
     <>

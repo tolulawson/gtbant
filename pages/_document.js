@@ -22,13 +22,13 @@ class MyDocument extends Document {
           <meta property='og:url' content='https://gtbant.lol/' />
           <meta property='og:title' content="GTBant — Wouldn't you rather bant with us?" />
           <meta property='og:description' content="Rant, vent and dunk on the Useless Bank -- because you can! This bank no longer cares about its customers and deserves all the condemnation it's getting" />
-          <meta property='og:image' content={`${typeof window !== 'undefined' ? window.location.origin : ''}/preview.jpg`} />
+          <meta property='og:image' content='https://i.ibb.co/GH15jt7/preview.jpg' />
 
           <meta property='og:type' content='website' />
           <meta property='og:url' content='https://gtbant.lol/' />
           <meta property='og:title' content="GTBant — Wouldn't you rather bant with us?" />
           <meta property='og:description' content="Rant, vent and dunk on the Useless Bank -- because you can! This bank no longer cares about its customers and deserves all the condemnation it's getting" />
-          <meta property='og:image' content={`${typeof window !== 'undefined' ? window.location.origin : ''}/preview.jpg`} />
+          <meta property='og:image' content='https://i.ibb.co/GH15jt7/preview.jpg' />
 
           <meta name='title' content="GTBant — Wouldn't you rather bant with us?" />
           <meta name='description' content="Rant, vent and dunk on the Useless Bank -- because you can! This bank no longer cares about its customers and deserves all the condemnation it's getting" />

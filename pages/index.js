@@ -111,6 +111,7 @@ export default function Home({ data }) {
                       timestamp={timestamp}
                       reviewSubject={subject}
                       reviewBody={review}
+                      key={timestamp}
                     />
                   );
                 })

@@ -40,11 +40,11 @@ function RadioCard(props) {
   );
 }
 
-export default function RadioAvatar({}) {
+export default function RadioAvatar({ onChange, value }) {
   const { getRootProps, getRadioProps } = useRadioGroup({
     name: 'avatar',
-    defaultValue: '',
-    onChange: console.log,
+    onChange,
+    value,
   });
 
   const group = getRootProps();
@@ -57,7 +57,6 @@ export default function RadioAvatar({}) {
           <RadioCard key={value} {...radio}>
             <Img
               borderRadius='full'
-              // boxSize={['60px', '70px']}
               src={avatarURLs[value]}
               alt='Avatar'
               objectFit='contain'

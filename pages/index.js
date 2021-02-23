@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 /* eslint-disable max-len */
 /* eslint-disable no-sparse-arrays */
 import {
@@ -6,40 +7,24 @@ import {
 import Image from 'next/image';
 import StarRatings from 'react-star-ratings';
 import Head from 'next/head';
-import { useState } from 'react';
+import { useRouter } from 'next/router';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
 import Slides from '../slider';
 import Review from '../review';
 import ReviewForm from '../reviewForm';
 import { formatNumber } from '../utilityFunctions';
 
-export default function Home() {
+export default function Home({ data }) {
+  const router = useRouter();
   const theme = useTheme();
-  const data = {
-    averageRating: 2.1,
-    totalReviews: 10,
+  const refreshData = () => {
+    router.replace(router.asPath);
   };
-  const [rating, setRating] = useState(data.averageRating);
-  const [totalReviews, setTotalReviews] = useState(data.totalReviews);
+
+  const { totalReviews, averageRating, reviews } = data;
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const singleReview = {
-    displayName: 'Angry Man',
-    avatarURLIndex: 0,
-    reviewRating: 3,
-    timestamp: new Date('January 3, 2021'),
-    reviewSubject: 'I hate this bank!',
-    reviewBody: 'Sit nulla est ex deserunt exercitation anim occaecat. Nostrud ullamco deserunt aute id consequat veniam incididunt duis in sint irure nisi. Mollit officia cillum Lorem ullamco minim nostrud elit officia tempor esse quis.',
-  };
-
-  const {
-    displayName,
-    avatarURLIndex,
-    reviewRating,
-    timestamp,
-    reviewSubject,
-    reviewBody,
-  } = singleReview;
 
   return (
     <>
@@ -73,9 +58,9 @@ export default function Home() {
             <Stack color='gray.600' justify='space-between' direction='row' w='100%' position='sticky' top={0}>
               <Box>
                 <Box d='flex' alignItems='center'>
-                  <Text as='span' fontSize='4xl' fontWeight='bold' mr={3} lineHeight={1.2}>{rating}</Text>
+                  <Text as='span' fontSize='4xl' fontWeight='bold' mr={3} lineHeight={1.2}>{averageRating}</Text>
                   <StarRatings
-                    rating={rating}
+                    rating={averageRating}
                     starDimension='clamp(15px, 5vw, 25px)'
                     starSpacing='clamp(1px,2vw,1.5px)'
                     starEmptyColor={theme.colors.gt[100]}
@@ -96,45 +81,39 @@ export default function Home() {
                     formatNumber(totalReviews)
                   }
                   {' '}
-                  reviews
+                  review
+                  {
+                    totalReviews > 1 ? 's' : ''
+                  }
                 </Text>
               </Box>
               <Button colorScheme='gt' borderRadius='4xl' pl={[4, 8]} pr={[4, 8]} onClick={onOpen}>Post a review</Button>
             </Stack>
             <Divider />
             <Stack direction='column' height='100vh' overflowY='scroll' w='100%' align='center'>
-              <Review
-                displayName={displayName}
-                avatarURLIndex={avatarURLIndex}
-                reviewRating={reviewRating}
-                timestamp={timestamp}
-                reviewSubject={reviewSubject}
-                reviewBody={reviewBody}
-              />
-              <Review
-                displayName={displayName}
-                avatarURLIndex={avatarURLIndex}
-                reviewRating={reviewRating}
-                timestamp={timestamp}
-                reviewSubject={reviewSubject}
-                reviewBody={reviewBody}
-              />
-              <Review
-                displayName={displayName}
-                avatarURLIndex={avatarURLIndex}
-                reviewRating={reviewRating}
-                timestamp={timestamp}
-                reviewSubject={reviewSubject}
-                reviewBody={reviewBody}
-              />
-              <Review
-                displayName={displayName}
-                avatarURLIndex={avatarURLIndex}
-                reviewRating={reviewRating}
-                timestamp={timestamp}
-                reviewSubject={reviewSubject}
-                reviewBody={reviewBody}
-              />
+              {
+                reviews.map((singleReview) => {
+                  const {
+                    name,
+                    avatarIndex,
+                    rating,
+                    timestamp,
+                    subject,
+                    review,
+                  } = singleReview;
+
+                  return (
+                    <Review
+                      displayName={!name ? 'Anonymous' : name}
+                      avatarURLIndex={avatarIndex}
+                      reviewRating={rating}
+                      timestamp={timestamp}
+                      reviewSubject={subject}
+                      reviewBody={review}
+                    />
+                  );
+                })
+              }
               <Box mb={10}>
                 <Button variant='ghost' colorScheme='gt' size='lg'>Load more reviews</Button>
               </Box>
@@ -142,7 +121,58 @@ export default function Home() {
           </Stack>
         </Stack>
       </Box>
-      <ReviewForm isOpen={isOpen} onClose={onClose} />
+      <ReviewForm isOpen={isOpen} onClose={onClose} refresh={refreshData} />
     </>
   );
+}
+
+export async function getServerSideProps() {
+  const firebaseConfig = {
+    apiKey: process.env.FIREBASE_APIKEY,
+    authDomain: 'gtbant-46196.firebaseapp.com',
+    projectId: 'gtbant-46196',
+    storageBucket: 'gtbant-46196.appspot.com',
+    messagingSenderId: '762936752644',
+    appId: '1:762936752644:web:b20172f0899643fd2c5351',
+    measurementId: 'G-BBB9689FZM',
+  };
+  if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+  }
+
+  const db = firebase.firestore();
+  // if (process.env.HOST) {
+  //   db.settings({
+  //     host: process.env.HOST,
+  //     ssl: false,
+  //   });
+  // }
+  const reviewsRef = db.collection('reviews');
+  const snapshot = await reviewsRef.get();
+  const reviews = [];
+  snapshot.forEach((doc) => {
+    reviews.push(doc.data());
+  });
+  const calcAverage = (arr) => {
+    const sum = arr.reduce((a, b) => a + b, 0);
+    const average = sum / arr.length;
+    return Math.round(average * 10) / 10;
+  };
+
+  let data;
+
+  if (reviews.length > 0) {
+    data = {
+      totalReviews: reviews.length,
+      averageRating: calcAverage(reviews.map((i) => i.rating)),
+      reviews: reviews.sort((a, b) => b.timestamp - a.timestamp),
+    };
+  } else {
+    data = {
+      totalReviews: 0,
+      averageRating: 0,
+      reviews: null,
+    };
+  }
+  return { props: { data } };
 }

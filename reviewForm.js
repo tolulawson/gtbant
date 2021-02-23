@@ -21,7 +21,7 @@ import StarRatings from 'react-star-ratings';
 import { useState } from 'react';
 import RadioAvatar from './radioAvatar';
 
-export default function ReviewForm({ isOpen, onClose, ...rest }) {
+export default function ReviewForm({ isOpen, onClose, refresh }) {
   const [rating, setRating] = useState(0);
   const onRatingChange = ((newRating) => setRating(newRating));
   const [avatarIndex, setAvatarIndex] = useState(String(Math.floor(Math.random() * 7)));
@@ -64,7 +64,9 @@ export default function ReviewForm({ isOpen, onClose, ...rest }) {
   };
 
   const onSubmit = async (formInput) => {
-    const concatData = { ...formInput, rating, avatarIndex };
+    const concatData = {
+      ...formInput, rating, avatarIndex,
+    };
     setFormStatus({ data: false, loading: true, error: false });
     try {
       const response = await fetch('/api/postReview', {
@@ -77,6 +79,7 @@ export default function ReviewForm({ isOpen, onClose, ...rest }) {
       } else {
         setFormStatus({ data: true, loading: false, error: false });
         resetForm();
+        refresh();
       }
     } catch (e) {
       setFormStatus({ data: false, loading: false, error: true });
@@ -91,7 +94,7 @@ export default function ReviewForm({ isOpen, onClose, ...rest }) {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={() => { onClose(); resetForm(); }} isCentered motionPreset='slideInBottom' size='2xl' {...rest}>
+    <Modal isOpen={isOpen} onClose={() => { onClose(); resetForm(); }} isCentered motionPreset='slideInBottom' size='2xl'>
       <ModalOverlay />
       <ModalContent px={[0, 3, 10]} pt={[3, 1]} pb={[6]} borderRadius='2xl'>
         <ModalHeader color='gray.600' fontWeight='medium' fontSize='2xl'>Useful Review, Useless Bank</ModalHeader>

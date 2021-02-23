@@ -23,7 +23,7 @@ export default function Review({
   const theme = useTheme();
   // console.log(Object.keys(avatarURLs));
   return (
-    <Stack borderRadius={12} bg='gt.50' p={[3,, 2]} direction='row' color='gray.600' spacing={[6,, 10]}>
+    <Stack borderRadius={12} bg='gt.50' p={[3,, 2]} direction='row' color='gray.600' spacing={[6,, 10]} w='100%'>
       <Stack direction={['column',, 'row']} position='relative'>
         <Image
           borderRadius='full'
@@ -58,7 +58,7 @@ export default function Review({
           <Text fontSize='xs' color='gray.500' mt={0}>{timeAgo(timestamp)}</Text>
         </Stack>
         <Text fontSize='lg' fontWeight='medium' lineHeight={1} sx={{ marginTop: '5px!important' }}>{reviewSubject}</Text>
-        <TruncatedText text={reviewBody} limit={12} fontSize='sm' lineHeight={1.3} sx={{ transition: '0.2s ease' }} />
+        <TruncatedText text={reviewBody} limit={30} fontSize='sm' lineHeight={1.3} sx={{ transition: '0.2s ease' }} />
       </Stack>
 
     </Stack>

@@ -3,7 +3,7 @@ import { extendTheme, theme as defaultTheme } from '@chakra-ui/react';
 const styles = {
   global: {
     html: {
-      bg: 'url(bg.svg)',
+      bg: 'linear-gradient(111.74deg, #DE4F01 9.76%, #FCBF28 78.97%)',
       backgroundAttachment: 'fixed',
       backgroundRepeat: 'no-repeat',
     },
@@ -13,6 +13,15 @@ const styles = {
     },
   },
 };
+
+/* Rectangle 10 */
+
+// position: absolute;
+// width: 1440px;
+// height: 881px;
+
+// background: linear-gradient(111.74deg, #DE4F01 9.76%, #FCBF28 78.97%);
+
 
 const radii = {
   '4xl': '1.75rem',

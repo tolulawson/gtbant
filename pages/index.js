@@ -139,7 +139,7 @@ export default function Home({ data }) {
         </Stack>
       </Box>
       <ReviewForm isOpen={isOpen} onClose={onClose} refresh={refreshData} />
-      <Stack mt={10} align='center' maxW='2xl' lineHeight={1.1} mx='auto'>
+      <Stack mt={10} align='center' maxW='2xl' lineHeight={1.1} mx='auto' pb='30px'>
         <Text fontSize='xs' align='center'>This is not a real website. All names, copy, and colors are products of the developer’s hilarious imagination. Any resemblance to actual persons or companies, good service or otherwise, is purely coincidental.</Text>
         <Text>
           Built for lolz by

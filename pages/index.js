@@ -144,7 +144,7 @@ export default function Home({ data }) {
         <Text>
           Built for lolz by
           {' '}
-          <Link href='https://tolulawson.dev' fontWeight='bold' target='_blank'>tolulawson.dev</Link>
+          <Link href='https://tolulawson.com' fontWeight='bold' target='_blank'>tolulawson.com</Link>
         </Text>
       </Stack>
     </>
